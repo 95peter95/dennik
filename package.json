@@ -22,7 +22,8 @@
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "mongoose": "^8.7.1",
-    "parser": "^0.1.4"
+    "parser": "^0.1.4",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "concurrently": "^9.0.1",
