@@ -5,7 +5,6 @@ import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import postRoutes from './routes/postRoutes.js';
 import path from 'path';
-
 dotenv.config();
 
 const app = express();
