@@ -28,3 +28,26 @@ export const getPostById = asyncHandler(async (req, res) => {
         throw new Error();
     }
 });
+
+// PostComment Controller
+export const postComment = asyncHandler(async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const { author, comment } = req.body;
+
+    // Find the post by its ID and update it by pushing the new comment
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      { $push: { comments: { author, comment } } }, // Add new comment to comments array
+      { new: true } // Return the updated post
+    );
+
+    if (!post) {
+      return res.status(404).json({ message: "AHAHAH not found" }); // Return 404 if the post is not found
+    }
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: "Error adding comment", error });
+  }
+});

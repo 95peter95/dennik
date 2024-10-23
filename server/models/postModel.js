@@ -1,5 +1,20 @@
 import mongoose from 'mongoose';
 
+// Define the schema for a Comment
+const commentSchema = new mongoose.Schema({
+  author: {
+    type: String,
+    required: true
+  },
+  comment: {
+    type: String,
+    required: true
+  },
+}, {
+  timestamps: true
+}
+);
+
 // Define the schema for a Post
 const postSchema = new mongoose.Schema({
   name: {
@@ -11,9 +26,10 @@ const postSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: String,  // Base64 image string
+    type: String,
     required: true
   },
+  comments: [commentSchema],
 },
 {
   timestamps: true
