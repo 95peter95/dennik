@@ -93,7 +93,9 @@ const fetchPosts = async () => {
   return (
     <Box bg='tomato' w='100%' p={4} color='black'>
       {!showForm && (
+        <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
         <Button colorScheme="green" onClick={() => setShowForm(true)}>Pridaj novy odkaz</Button>
+        </Box>
       )}
 
       {/* Render the form to create a new post */}
@@ -187,7 +189,7 @@ const fetchPosts = async () => {
           {posts.map(post => (
             <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
               <Box display="flex" justifyContent="space-between" alignItems="center" w="80%">
-                <p style={{ fontSize: '0.6em', margin: 0 }}>{formatDateToSlovak(post.createdAt)}</p>
+                <p style={{ fontSize: '0.6em', marginTop: '-15px', marginLeft: '-10px'}}>{formatDateToSlovak(post.createdAt)}</p>
                 <Heading as="h4" size="md" textAlign="center" flexGrow={1} style={{marginTop:'-10px'}}>{post.name}</Heading>
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center" w="100%">
@@ -197,9 +199,11 @@ const fetchPosts = async () => {
 
               {/* Render all comments if they exist */}
               {post.comments && post.comments.length > 0 && post.comments.map((comment, index) => (
+                <Box display="flex" justifyContent="center" alignItems="center" w="100%">
                 <Text key={index} as="p" style={{ fontSize: "0.6em" }}>
                   {formatDateToSlovak(comment.createdAt)} <strong>{comment.author}</strong>: {comment.comment}
                 </Text>
+                </Box>
               ))}
 
               {/* Show comment form if selected */}
@@ -233,6 +237,7 @@ const fetchPosts = async () => {
                   </Button>
                 </Box>
               ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
                 <Button
                   colorScheme="green"
                   style={{ width: '80px', height: '20px', fontSize: '0.6em' }}
@@ -240,6 +245,7 @@ const fetchPosts = async () => {
                 >
                   Pridaj komentar
                 </Button>
+                </Box>
               )}
             </Box>
           ))}
