@@ -200,7 +200,7 @@ const fetchPosts = async () => {
               {/* Render all comments if they exist */}
               {post.comments && post.comments.length > 0 && post.comments.map((comment, index) => (
                 <Box display="flex" justifyContent="center" alignItems="center" w="100%">
-                <Text key={index} as="p" style={{ fontSize: "0.6em" }}>
+                <Text key={index} as="p" style={{ fontSize: "0.8em" }}>
                   {formatDateToSlovak(comment.createdAt)} <strong>{comment.author}</strong>: {comment.comment}
                 </Text>
                 </Box>
@@ -221,6 +221,7 @@ const fetchPosts = async () => {
                     onChange={(e) => setCommentContent(e.target.value)}
                     mb={2}
                   />
+                  <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
                   <Button
                     colorScheme="green"
                     style={{ width: '80px', height: '20px', fontSize: '0.6em' }}
@@ -235,12 +236,13 @@ const fetchPosts = async () => {
                   >
                     Zrusit
                   </Button>
+                  </Box>
                 </Box>
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
                 <Button
                   colorScheme="green"
-                  style={{ width: '80px', height: '20px', fontSize: '0.6em' }}
+                  style={{ width: '90px', height: '20px', fontSize: '0.7em' }}
                   onClick={() => setSelectedPostId(post._id)}
                 >
                   Pridaj komentar
