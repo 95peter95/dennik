@@ -91,24 +91,25 @@ const fetchPosts = async () => {
   };
 
   return (
-    <Box bg='tomato' w='100%' p={4} color='black'>
+    <Box background='linear-gradient(90deg, rgba(154,66,115,1) 0%, rgba(200,144,94,1) 100%)'p={4} color='black'>
+      <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
+      <Heading as="h2" size="lg" style={{color: 'black', marginBottom: '10px' }}>DENNICEK🐹</Heading>
+      </Box>
       {!showForm && (
-        <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
+        <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1} marginBottom='-25px'>
         <Button colorScheme="green" onClick={() => setShowForm(true)}>Pridaj novy odkaz</Button>
         </Box>
       )}
 
       {/* Render the form to create a new post */}
         {showForm && (
-          <SimpleGrid columns={[1, null, 1]} spacing="40px" width="auto">
-            <Box w={{ base: '100%', md: '80%', lg: '100%' }} p={4} color='black' mt={0}>
-              <Heading as="h2" size="lg" mb={4}>Pridaj odkaz</Heading>
-              <VStack spacing={4} mt={6}>
+          <SimpleGrid w={{ base: '100%', md: '80%', lg: '100%' }}  columns={[0, 0, 1]} spacing="40px" width="full">
+              <VStack spacing={4} mt={1}>
                 {nameError && (
                   <Heading as="p" size="md" color="red.500">VYPLN MENO A ODKAZ!!!😼</Heading>
                 )}
                 <Input
-                  w={{ base: '100%', sm: '80%', md: '60%', lg: '50%' }}
+                  w={{ base: '80%', sm: '80%', md: '60%', lg: '20%' }}
                   placeholder="Tvoje meno"
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -116,7 +117,7 @@ const fetchPosts = async () => {
                   _focus={{ borderColor: nameError ? 'yellow.500' : 'gray.200' }}
                 />
                 <Input
-                  w={{ base: '100%', sm: '80%', md: '60%', lg: '50%' }}
+                  w={{ base: '80%', sm: '80%', md: '60%', lg: '20%' }}
                   placeholder="Napis nieco"
                   value={subject}
                   onChange={e => setSubject(e.target.value)}
@@ -130,7 +131,7 @@ const fetchPosts = async () => {
                   boxShadow="md"
                   p={2}
                   mb={0}
-                  w={{ base: '100%', md: '80%', lg: '70%' }}
+                  w={{ base: '100%', md: '80%', lg: '35%' }}
                   style={{paddingBottom: '-100px'}}
                 >
                   <CanvasDraw 
@@ -178,16 +179,14 @@ const fetchPosts = async () => {
                   <Button colorScheme="red" borderRadius="8px" mb={2} onClick={() => setShowForm(false)}>Spat</Button>
                 </Box>
               </VStack>
-            </Box>
           </SimpleGrid>
         )}
 
       {/* Render all posts */}
       <VStack spacing={4} mt={12}>
-        <Heading as="h2" size="lg" style={{ marginTop: '-20px', color: 'black' }}>DENNICEK 🐹</Heading>
-        <SimpleGrid columns={[1, null, 1]} spacing="40px" width="full">
+        <SimpleGrid w={{ base: '100%', md: '80%', lg: '50%' }}  columns={[1, null, 2]} spacing="40px" width="full">
           {posts.map(post => (
-            <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
+            <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} background='linear-gradient(90deg, rgba(157,102,130,1) 0%, rgba(200,184,174,1) 50%, rgba(193,149,111,1) 100%)'>
               <Box display="flex" justifyContent="space-between" alignItems="center" w="80%">
                 <p style={{ fontSize: '0.6em', marginTop: '-15px', marginLeft: '-10px'}}>{formatDateToSlovak(post.createdAt)}</p>
                 <Heading as="h4" size="md" textAlign="center" flexGrow={1} style={{marginTop:'-10px'}}>{post.name}</Heading>
@@ -199,8 +198,8 @@ const fetchPosts = async () => {
 
               {/* Render all comments if they exist */}
               {post.comments && post.comments.length > 0 && post.comments.map((comment, index) => (
-                <Box display="flex" justifyContent="center" alignItems="center" w="100%">
-                <Text key={index} as="p" style={{ fontSize: "0.8em" }}>
+                <Box display="flex" justifyContent="left" alignItems="center" w="100%" borderWidth="0.01em" borderColor = '#1d1b18' borderRadius='5px' marginBottom='2px' background='radial-gradient(circle, rgba(252,70,107,1) 0%, rgba(246,219,228,1) 100%)'>
+                <Text key={index} as="p" style={{ fontSize: "0.8em", marginLeft: '5px' }}>
                   {formatDateToSlovak(comment.createdAt)} <strong>{comment.author}</strong>: {comment.comment}
                 </Text>
                 </Box>
