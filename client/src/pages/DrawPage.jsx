@@ -196,7 +196,7 @@ const fetchPosts = async () => {
               </Box>
               <Image src={post.image} alt="Painting" width="100%" height="auto" borderRadius="md" />
 
-              {/* Render all comments if they exist */}
+              {/* Render all comments if they exist*/}
               {post.comments && post.comments.length > 0 && post.comments.map((comment, index) => (
                 <Box display="flex" justifyContent="left" alignItems="center" w="100%" borderWidth="0.01em" borderColor = '#1d1b18' borderRadius='5px' marginBottom='2px' background='radial-gradient(circle, rgba(252,70,107,1) 0%, rgba(246,219,228,1) 100%)'>
                 <Text key={index} as="p" style={{ fontSize: "0.8em", marginLeft: '5px' }}>
