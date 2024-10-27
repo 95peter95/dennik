@@ -12,5 +12,5 @@ services:
       - MONGO_URI=mongodb+srv://peterpauco1:UrjHAQtn1b7zWO01@cluster0.s1mox.mongodb.net/post_web?retryWrites=true&w=majority&appName=Cluster0      
       - PORT=5000
     image: pppauco/dennik:latest
-    container_name: dennik
+    container_name: dennik_dev
     command: ["npm", "start"]
