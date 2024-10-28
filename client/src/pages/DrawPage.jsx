@@ -164,7 +164,7 @@ const fetchPosts = async () => {
                     brushColor={brushColor} 
                     lazyRadius={0} 
                     enablePanAndZoom={true} 
-                    brushRadius={brushRadius} 
+                    brushRadius={brushRadius.toFixed(1)} 
                     canvasWidth={300} 
                     canvasHeight={250} 
                     hideGrid={true} 
@@ -180,21 +180,25 @@ const fetchPosts = async () => {
                     </GridItem>
                     <GridItem colSpan={3}>
                       <Slider
-                        defaultValue={brushRadius}
-                        min={0.5}
-                        max={20.0}
-                        step={0.5}
+                        defaultValue={1}
+                        min={1}
+                        max={20}
+                        step={1}
                         value={brushRadius}
                         onChange={(value) => setBrushRadius(value)}
                         w={{ base: '100%', md: '100%', lg: '100%' }}>
-                        <SliderTrack bg="gray.200" borderRadius='5px'>
-                          <SliderFilledTrack bg="green.500" />
+                        <SliderTrack bg="gray.200" borderRadius='5px' height='20px'>
+                          <SliderFilledTrack bg="green.500">
+                            <Text fontSize='0.8em' marginLeft='80px'>
+                              {brushRadius}
+                            </Text>
+                            </SliderFilledTrack>
                         </SliderTrack>
-                        <SliderThumb boxSize={2} />
+                        <SliderThumb boxSize={3} background='black' />
                       </Slider>
                     </GridItem>
                     <GridItem>
-                      <IconButton style={{width:'1.2em', height:'1.2em', marginTop: '-1px', marginLeft: '10px'}} aria-label="Undo" icon={<FaUndo />} onClick={handleUndo} />
+                      <IconButton style={{width:'1.2em', height:'1.2em', marginTop: '-6px', marginLeft: '15px'}} aria-label="Undo" icon={<FaUndo />} onClick={handleUndo} />
                     </GridItem>
                     </Grid>
                 </Box>
