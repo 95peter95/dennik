@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Button, Input, Text, Heading, VStack, SimpleGrid, Image, Radio, RadioGroup, Stack } from '@chakra-ui/react';
+import { Box, Button, Input, Text, Heading, VStack, SimpleGrid, Image, Radio, RadioGroup, Stack, IconButton, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Grid, GridItem} from '@chakra-ui/react';
 import CanvasDraw from 'react-canvas-draw';
 import axios from 'axios';
+import { FaUndo } from 'react-icons/fa';
 
 const DrawPage = () => {
   const [posts, setPosts] = useState([]); // To hold the list of posts
@@ -15,6 +16,7 @@ const DrawPage = () => {
   const [commentAuthor, setCommentAuthor] = useState("");  // For new comment author
   const [brushRadius, setBrushRadius] = useState(1); // State for brush radius
   const [brushColor, setBrushColor] = useState('black'); // State for brush color
+  const [canvasHistory, setCanvasHistory] = useState([]);
   const canvasRef = useRef(null);
 
   // Fetch all posts when the page loads
@@ -52,6 +54,7 @@ const fetchPosts = async () => {
           setName(""); // Reset name input
           setSubject(""); // Reset subject input
           canvasRef.current.clear(); // Clear the canvas
+          setCanvasHistory([]);
         })
         .catch(error => console.error("Error saving post:", error));
     }
@@ -61,6 +64,27 @@ const fetchPosts = async () => {
   const clearCanvas = () => {
     if (canvasRef.current) {
       canvasRef.current.clear();
+      setCanvasHistory([]);
+    }
+  };
+
+  const handleSaveState = () => {
+    if (canvasRef.current) {
+      const currentCanvasState = canvasRef.current.getSaveData();
+      setCanvasHistory((prev) => [...prev, currentCanvasState]);
+    }
+  };
+
+  const handleUndo = () => {
+    if (canvasHistory.length > 1 && canvasRef.current) {
+      setCanvasHistory((prev) => {
+        const newHistory = prev.slice(0, -1); // Remove last entry
+        canvasRef.current.loadSaveData(newHistory[newHistory.length - 1], true); // Load previous state
+        return newHistory;
+      });
+    }
+    else {
+      clearCanvas();
     }
   };
 
@@ -103,7 +127,7 @@ const fetchPosts = async () => {
 
       {/* Render the form to create a new post */}
         {showForm && (
-          <SimpleGrid w={{ base: '100%', md: '80%', lg: '100%' }}  columns={[0, 0, 1]} spacing="40px" width="full">
+          <SimpleGrid w={{ base: '100%', md: '100%', lg: '100%' }}  columns={[0, 0, 1]} spacing="40px" width="full">
               <VStack spacing={4} mt={1}>
                 {nameError && (
                   <Heading as="p" size="md" color="red.500">VYPLN MENO A ODKAZ!!!😼</Heading>
@@ -135,7 +159,8 @@ const fetchPosts = async () => {
                   style={{paddingBottom: '-100px'}}
                 >
                   <CanvasDraw 
-                    ref={canvasRef} 
+                    ref={canvasRef}
+                    onChange={handleSaveState}
                     brushColor={brushColor} 
                     lazyRadius={0} 
                     enablePanAndZoom={true} 
@@ -148,16 +173,30 @@ const fetchPosts = async () => {
                   />
                 </Box>
                 {/* Brush Radius Selection */}
-                <Box mt={0} style = {{marginTop: '-10px'}}>
-                  <RadioGroup value={String(brushRadius)} onChange={(value) => setBrushRadius(Number(value))}>
-                    <Stack direction="row" spacing={4}>
+                <Box display="grid" justifyContent="center" alignItems="center" w="100%" mt={0} style = {{marginTop: '-10px'}}>
+                  <Grid templateColumns="repeat(5, 1fr)" gap="1">
+                    <GridItem marginLeft='30px'>
                       <p>🧹</p>
-                      <Radio style={{width:'0.7em', height:'0.7em'}} value="1"></Radio>
-                      <Radio style={{width:'0.8em', height:'0.8em'}} value="2"></Radio>
-                      <Radio style={{width:'0.9em', height:'0.9em'}} value="3"></Radio>
-                      <Radio style={{width:'1.0em', height:'1.0em'}} value="4"></Radio>
-                    </Stack>
-                  </RadioGroup>
+                    </GridItem>
+                    <GridItem colSpan={3}>
+                      <Slider
+                        defaultValue={brushRadius}
+                        min={0.5}
+                        max={20.0}
+                        step={0.5}
+                        value={brushRadius}
+                        onChange={(value) => setBrushRadius(value)}
+                        w={{ base: '100%', md: '100%', lg: '100%' }}>
+                        <SliderTrack bg="gray.200" borderRadius='5px'>
+                          <SliderFilledTrack bg="green.500" />
+                        </SliderTrack>
+                        <SliderThumb boxSize={2} />
+                      </Slider>
+                    </GridItem>
+                    <GridItem>
+                      <IconButton style={{width:'1.2em', height:'1.2em', marginTop: '-1px', marginLeft: '10px'}} aria-label="Undo" icon={<FaUndo />} onClick={handleUndo} />
+                    </GridItem>
+                    </Grid>
                 </Box>
 
                 {/* Brush Color Selection */}
@@ -167,16 +206,22 @@ const fetchPosts = async () => {
                       <p>🖌️</p>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'black', borderColor: 'black'}} value="black"></Radio>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'red', borderColor: 'red'}} value="red"></Radio>
-                      <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'yellow', borderColor: 'yellow'}} value="yellow"></Radio>
+                      <Radio style={{width:'1.0em', height:'1.0em', color:'black', background: 'yellow', borderColor: 'yellow'}} value="yellow"></Radio>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'green', borderColor: 'green'}} value="green"></Radio>
+                      <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'blue', borderColor: 'blue'}} value="blue"></Radio>
+                      <Radio style={{width:'1.0em', height:'1.0em', color:'black', background: '#eee6e4', borderColor: '#eee6e4'}} value="#eee6e4"></Radio>
                     </Stack>
                   </RadioGroup>
                 </Box>
+                
 
                 <Box display="flex" justifyContent="center" w="100%" flexWrap="wrap">
                   <Button colorScheme="green" borderRadius="8px" mr={2} mb={2} onClick={savePost}>Ulozit</Button>
                   <Button colorScheme="yellow" borderRadius="8px" mr={2} mb={2} onClick={clearCanvas}>Reset</Button>
-                  <Button colorScheme="red" borderRadius="8px" mb={2} onClick={() => setShowForm(false)}>Spat</Button>
+                  <Button colorScheme="red" borderRadius="8px" mb={2}  onClick={() => {
+                    setShowForm(false);
+                    clearCanvas();
+                    }}>Spat</Button>
                 </Box>
               </VStack>
           </SimpleGrid>
@@ -184,7 +229,7 @@ const fetchPosts = async () => {
 
       {/* Render all posts */}
       <VStack spacing={4} mt={12}>
-        <SimpleGrid w={{ base: '100%', md: '80%', lg: '50%' }}  columns={[1, null, 2]} spacing="40px" width="full">
+        <SimpleGrid w={{ base: '100%', md: '80%', lg: '50%' }}  columns={[1, 1, 2]} spacing="40px" width="full">
           {posts.map(post => (
             <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} background='linear-gradient(90deg, rgba(157,102,130,1) 0%, rgba(200,184,174,1) 50%, rgba(193,149,111,1) 100%)'>
               <Box display="flex" justifyContent="space-between" alignItems="center" w="80%">
@@ -241,7 +286,7 @@ const fetchPosts = async () => {
                 <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
                 <Button
                   colorScheme="green"
-                  style={{ width: '90px', height: '20px', fontSize: '0.7em' }}
+                  style={{ width: '90px', height: '20px', fontSize: '0.7em', marginTop: '5px' }}
                   onClick={() => setSelectedPostId(post._id)}
                 >
                   Pridaj komentar
