@@ -3,6 +3,7 @@ import { Box, Button, Input, Text, Heading, VStack, SimpleGrid, Image, Radio, Ra
 import CanvasDraw from 'react-canvas-draw';
 import axios from 'axios';
 import { FaUndo } from 'react-icons/fa';
+import Header from '../components/Header.jsx';
 
 const DrawPage = () => {
   const [posts, setPosts] = useState([]); // To hold the list of posts
@@ -118,6 +119,7 @@ const fetchPosts = async () => {
 
   return (
     <Box background='linear-gradient(90deg, rgba(154,66,115,1) 0%, rgba(200,144,94,1) 100%)'p={4} color='black'>
+      <Header />
       <Box display="flex" justifyContent="center" alignItems="center" w="100%" mt={1}>
       <Heading as="h2" size="lg" style={{color: 'black', marginBottom: '10px' }}>DENNICEK🐹</Heading>
       </Box>

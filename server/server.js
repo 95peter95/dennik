@@ -1,23 +1,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { notFound, errorHandler} from './middleware/errorMiddleware.js';
 import bodyParser from 'body-parser';
 import connectDB from './config/db.js';
 import postRoutes from './routes/postRoutes.js';
+import recordingRoutes from './routes/recordingRoutes.js';
 import path from 'path';
-dotenv.config();
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const __dirname = path.resolve();
-
-// app.use(express.json());
+// Middleware to parse JSON bodies
 app.use(bodyParser.json({ limit: '50mb' }));
-// app.use(notFound);
-// app.use(errorHandler);
 
+// Routes
 app.use('/api/posts', postRoutes);
+app.use('/api/recordings', recordingRoutes);
+
+const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === 'production') {
     // Serve static files from client/dist in production
