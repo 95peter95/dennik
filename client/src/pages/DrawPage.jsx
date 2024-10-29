@@ -105,14 +105,16 @@ const fetchPosts = async () => {
 
   const formatDateToSlovak = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('sk-SK', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric'
-    });
-  };
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hour}:${minute}`;
+};
+
 
   return (
     <Box background='linear-gradient(90deg, rgba(154,66,115,1) 0%, rgba(200,144,94,1) 100%)'p={4} color='black'>
@@ -213,6 +215,8 @@ const fetchPosts = async () => {
                       <Radio style={{width:'1.0em', height:'1.0em', color:'black', background: 'yellow', borderColor: 'yellow'}} value="yellow"></Radio>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'green', borderColor: 'green'}} value="green"></Radio>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'blue', borderColor: 'blue'}} value="blue"></Radio>
+                      <Radio style={{width:'1.0em', height:'1.0em', color:'black', background: 'orange', borderColor: 'orange'}} value="orange"></Radio>
+                      <Radio style={{width:'1.0em', height:'1.0em', color:'white', background: 'brown', borderColor: 'brown'}} value="brown"></Radio>
                       <Radio style={{width:'1.0em', height:'1.0em', color:'black', background: '#eee6e4', borderColor: '#eee6e4'}} value="#eee6e4"></Radio>
                     </Stack>
                   </RadioGroup>
@@ -233,9 +237,9 @@ const fetchPosts = async () => {
 
       {/* Render all posts */}
       <VStack spacing={4} mt={12}>
-        <SimpleGrid w={{ base: '100%', md: '80%', lg: '50%' }}  columns={[1, 1, 2]} spacing="40px" width="full">
+        <SimpleGrid w={{ base: '100%', md: '80%', lg: '50%' }}  columns={[1, 2, 2]} spacing="40px" width="full">
           {posts.map(post => (
-            <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} background='linear-gradient(90deg, rgba(157,102,130,1) 0%, rgba(200,184,174,1) 50%, rgba(193,149,111,1) 100%)'>
+            <Box key={post._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} height= 'fit-content' background='linear-gradient(90deg, rgba(157,102,130,1) 0%, rgba(200,184,174,1) 50%, rgba(193,149,111,1) 100%)'>
               <Box display="flex" justifyContent="space-between" alignItems="center" w="80%">
                 <p style={{ fontSize: '0.6em', marginTop: '-15px', marginLeft: '-10px'}}>{formatDateToSlovak(post.createdAt)}</p>
                 <Heading as="h4" size="md" textAlign="center" flexGrow={1} style={{marginTop:'-10px'}}>{post.name}</Heading>
@@ -247,7 +251,7 @@ const fetchPosts = async () => {
 
               {/* Render all comments if they exist*/}
               {post.comments && post.comments.length > 0 && post.comments.map((comment, index) => (
-                <Box display="flex" justifyContent="left" alignItems="center" w="100%" borderWidth="0.01em" borderColor = '#1d1b18' borderRadius='5px' marginBottom='2px' background='radial-gradient(circle, rgba(252,70,107,1) 0%, rgba(246,219,228,1) 100%)'>
+                <Box display="flex" justifyContent="left" alignItems="center" w="100%" borderWidth="0.01em" borderColor = '#1d1b18' borderRadius='5px' marginBottom='4px' marginTop='4px' background='radial-gradient(circle, rgba(252,70,107,1) 0%, rgba(246,219,228,1) 100%)'>
                 <Text key={index} as="p" style={{ fontSize: "0.8em", marginLeft: '5px' }}>
                   {formatDateToSlovak(comment.createdAt)} <strong>{comment.author}</strong>: {comment.comment}
                 </Text>
