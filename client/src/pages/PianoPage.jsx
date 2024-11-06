@@ -103,7 +103,7 @@ const PianoRecorder = () => {
         noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('f5') }}
         playNote={playNote}
         stopNote={() => {}}
-        width={400}
+        width={375}
       />
       <button style={{borderWidth: '1px', marginTop:'10px'}} onClick={isRecording ? stopRecording : startRecording}>
         {isRecording ? "zastav nahravanie" : "nahravat"}
