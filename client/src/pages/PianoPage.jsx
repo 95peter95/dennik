@@ -119,7 +119,7 @@ const PianoRecorder = () => {
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            placeholder="Popis piesni"
+            placeholder="Nazov piesne"
           />
         </div>
         <Piano
