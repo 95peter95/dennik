@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import { Piano, MidiNumbers } from 'react-piano';
 import * as Tone from 'tone';
 import 'react-piano/dist/styles.css';
 import axios from 'axios';
@@ -42,14 +42,14 @@ const PianoRecorder = () => {
 
   const startRecording = async () => {
     const stream = Tone.Destination.stream;
-    recorder.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+    recorder.current = new MediaRecorder(stream, { mimeType: 'audio/mp3' }); // Use mp3 for compatibility
     
     recorder.current.ondataavailable = (event) => {
       audioChunks.current.push(event.data);
     };
 
     recorder.current.onstop = async () => {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+      const audioBlob = new Blob(audioChunks.current, { type: 'audio/mp3' }); // Store as mp3
       const formData = new FormData();
       formData.append("author", author);
       formData.append("subject", subject);
@@ -90,7 +90,7 @@ const PianoRecorder = () => {
       audioRef.current.currentTime = 0; // Reset playback position
     }
 
-    const audioUrl = `data:audio/webm;base64,${base64Data}`;
+    const audioUrl = `data:audio/mp3;base64,${base64Data}`; // Ensure we are using MP3
     const audio = new Audio(audioUrl);
     
     // Set the audio reference to the current audio object
@@ -119,7 +119,7 @@ const PianoRecorder = () => {
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            placeholder="Nazov piesne"
+            placeholder="Popis piesni"
           />
         </div>
         <Piano
@@ -142,7 +142,7 @@ const PianoRecorder = () => {
               <span>Autor: <strong>{recording.author}</strong> piesen: <strong>{recording.subject}</strong></span>
               <button
                 style={{ marginLeft: '10px', borderWidth: '1px' }}
-                onClick={() => playRecording(recording.mp3)}
+                onClick={() => playRecording(recording.mp3)} // Ensure mp3 is sent and played
               >
                 Prehrat
               </button>
